@@ -88,8 +88,17 @@ public class Parser {
 				Element product = e.parent();
 				
 				// name of the product
-				String name = product.child(0).select("span.description ")
+				String test = product.child(0).toString();
+				String name = test.substring(test.indexOf("alt")+5,test.indexOf("class",test.indexOf("alt")+5)-2).trim();
+				String sku = test.substring(test.indexOf("Stockcode")+10,test.indexOf("amp")-1);
+				String volume = product.child(0).select("span.volume-size")
 						.text();
+				
+				// check for symbols in name or formatting issues
+				if (name.contains("&amp;"))
+					name = name.replace("&amp;", "&"); 
+				if (name.contains("  "))
+					name = name.replace("  ", " "); 
 				
 				// special price for the product
 				String special = product.child(1)
@@ -101,7 +110,7 @@ public class Parser {
 						.text().replace("was", "").replace("$", "").trim();
 				
 				// String to be printed
-				String print = name + "\t" + special + "\t"
+				String print = name + "\t\t" + volume + "\t" + sku + "\t" + special + "\t"
 						+ normal + "\t" + (Double.parseDouble(normal) - Double.parseDouble(special)); 
 				System.out.println(print);
 				pWriter.println(print);
