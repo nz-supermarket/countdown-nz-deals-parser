@@ -24,11 +24,10 @@ import org.jsoup.select.Elements;
 public class Parser {
 
 	private Component frame = null;
-	private File file = null; 
 	private PrintWriter pWriter = null; 
 	
 	// recommended to use the date of the today
-	private final String fileName = "2014 04 24.txt";  
+	private final String fileName = "2014 04 28.txt";  
 
 	/**
 	 * 
@@ -36,6 +35,8 @@ public class Parser {
 	public Parser() {
 		try {
 			pWriter = new PrintWriter(new File(fileName));
+
+			pWriter.println("Name\tVolume/Size\tSKU\tSpecial Price\tNormal Price\tPrice Diff");
 		} catch (FileNotFoundException e) {
 		} 
 		
@@ -49,6 +50,7 @@ public class Parser {
 		this.frame = frame;
 		try {
 			pWriter = new PrintWriter(new File(fileName));
+			pWriter.println("Name\tVolume/Size\tSKU\tSpecial Price\tNormal Price\tPrice Diff");
 		} catch (FileNotFoundException e) {
 		} 
 	}
@@ -89,7 +91,7 @@ public class Parser {
 				
 				// name of the product
 				String test = product.child(0).toString();
-				String name = test.substring(test.indexOf("alt")+5,test.indexOf("class",test.indexOf("alt")+5)-2).trim();
+				String name = test.substring(test.indexOf("img alt=")+9,test.indexOf("class",test.indexOf("img alt=")+9)-2).trim();
 				String sku = test.substring(test.indexOf("Stockcode")+10,test.indexOf("amp")-1);
 				String volume = product.child(0).select("span.volume-size")
 						.text();
@@ -104,14 +106,19 @@ public class Parser {
 				String special = product.child(1)
 						.select("span.price.special-price").text()
 						.replace("$", "");
+				double sValue = Math.round(Double.parseDouble(special) * 100.00) / 100.00; 
 				
 				// normal price for the product
 				String normal = product.child(1).select("span.was-price")
 						.text().replace("was", "").replace("$", "").trim();
+				double nValue = Math.round(Double.parseDouble(normal) * 100.00) / 100.00; 
+				
+				// value diff
+				double diff = Math.round((nValue - sValue) * 100.00) / 100.00; 
 				
 				// String to be printed
-				String print = name + "\t\t" + volume + "\t" + sku + "\t" + special + "\t"
-						+ normal + "\t" + (Double.parseDouble(normal) - Double.parseDouble(special)); 
+				String print = name + "\t" + volume + "\t" + sku + "\t" + sValue + "\t"
+						+ nValue + "\t" + diff; 
 				System.out.println(print);
 				pWriter.println(print);
 			}
@@ -119,8 +126,10 @@ public class Parser {
 			if (frame != null)
 				new JMessage(frame, "" + e.getMessage(),
 						JOptionPane.ERROR_MESSAGE);
-			else
+			else {
 				System.out.println(e.getMessage());
+				return -1;
+			}
 		}
 		return 0;
 	}
