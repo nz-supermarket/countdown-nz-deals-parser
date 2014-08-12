@@ -9,7 +9,10 @@ Users who know how to code, could even make use of the print writer written in t
 Additionally, I have worked with Google Drive Spreadsheet to consolidate all data retrieve over a number of weeks. 
 If you are a consumer in New Zealand looking for cheap supermarket deals. 
 That spreadsheet is for you. 
-https://docs.google.com/spreadsheets/d/16F9t-HncTzZlzcZPb_pU1pj-qWLCJurOo_FE2yf_Piw/edit?usp=sharing
+
+https://goo.gl/3DkB03
+
+![spreadsheet](http://chart.apis.google.com/chart?chs=200x200&cht=qr&chld=|1&chl=http%3A%2F%2Fgoo.gl%2F3DkB03 "QR for Spreadsheet")
 
 In the spreadsheet, I have included Google Script functions to pick up the latest list that I have compiled on the deals for the specific week. Google script has been a pain and took me approximately 3 weeks to tweak it to get it to work for the spreadsheet. Even now, there are still certain issue with the script and I am still looking into getting it right. 
 The script would work itself to update the above mentioned spreadsheet with 2 different functions. 
